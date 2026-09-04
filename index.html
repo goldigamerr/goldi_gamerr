@@ -3,79 +3,228 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#06191f">
+<meta name="theme-color" content="#061b20">
 <title>FF Reward Hub</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#071a20; --panel:#2a4c55; --cyan:#00f6ff; --cyan2:#00cfe8;
-  --pink:#ff4bd8; --text:#fff; --muted:#d9e1e4;
+  --bg:#071a20;
+  --bg2:#0b242b;
+  --panel:rgba(48,82,92,.72);
+  --cyan:#00eaf4;
+  --cyan-soft:rgba(0,234,244,.20);
+  --pink:#ff49d2;
+  --text:#f8fbfc;
+  --muted:#d5dde0;
 }
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:'Poppins',Arial,Helvetica,sans-serif;background:var(--bg);color:#fff}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
 body{overflow-x:hidden}
 button,input{font:inherit}
-button{cursor:pointer}
-.app{min-height:100vh;background:
- radial-gradient(circle at 50% 25%,rgba(0,246,255,.07),transparent 30%),
- linear-gradient(180deg,#061b21 0%,#0b2228 55%,#071a20 100%);padding:32px 14px 70px}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+.app{
+  min-height:100vh;
+  padding:34px 14px 80px;
+  background:
+    radial-gradient(circle at 50% 24%,rgba(0,234,244,.055),transparent 29%),
+    linear-gradient(180deg,#071b21 0%,#0a242b 55%,#071a20 100%);
+}
 .header{text-align:center}
-.title{font-family:'Orbitron',sans-serif;margin:0;font-size:clamp(36px,8vw,72px);font-weight:800;letter-spacing:-2px;color:var(--cyan);text-shadow:0 0 10px rgba(0,246,255,.55)}
-.insta{font-family:'Trebuchet MS','Segoe UI',Arial,sans-serif;font-weight:600;display:flex;align-items:center;justify-content:center;gap:16px;margin:42px 0 28px;font-size:clamp(27px,6vw,44px);color:var(--pink)}
-.insta-icon{width:48px;height:48px;border-radius:13px;background:linear-gradient(135deg,#6d24ff,#f0008c 52%,#ffb300);display:grid;place-items:center;box-shadow:0 0 12px rgba(255,75,216,.28);position:relative}
-.insta-icon:before{content:"";width:25px;height:25px;border:3px solid white;border-radius:8px}
-.insta-icon:after{content:"";position:absolute;width:7px;height:7px;border:3px solid white;border-radius:50%;top:13px;right:12px}
-.hub{width:min(930px,100%);margin:auto;padding:38px 34px 30px;border-radius:30px;background:rgba(53,88,98,.78);box-shadow:0 0 24px rgba(0,246,255,.22),inset 0 0 28px rgba(0,246,255,.05)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
-.card{border:5px solid var(--cyan);border-radius:29px;overflow:hidden;aspect-ratio:1;background:#000;box-shadow:0 0 15px rgba(0,246,255,.75),inset 0 0 8px rgba(0,246,255,.15);padding:0;transition:.18s transform,.18s box-shadow,.18s border-color}
-.card img{width:100%;height:100%;display:block;object-fit:cover}
-.card.selected{border-color:#fff;box-shadow:0 0 8px #fff,0 0 28px var(--cyan),0 0 52px rgba(0,246,255,.8);transform:scale(.975)}
-.card.selected:after{content:"✓";position:absolute}
-.uid-wrap{margin:34px auto 20px;max-width:720px}
-.uid{width:100%;height:62px;border:3px solid var(--cyan);border-radius:32px;background:#07151a;color:#fff;padding:0 25px;outline:none;box-shadow:0 0 14px rgba(0,246,255,.35);text-align:center;font-size:20px}
-.uid::placeholder{color:#9fb0b5}
-.uid:focus{box-shadow:0 0 8px var(--cyan),0 0 26px rgba(0,246,255,.35)}
-.claim{font-family:'Poppins',sans-serif;font-weight:600;display:block;width:min(86%,680px);margin:0 auto;border:0;border-radius:38px;height:78px;color:#fff;font-size:30px;background:linear-gradient(100deg,#13dce9,#173cff);box-shadow:0 0 18px rgba(0,246,255,.3);transition:.2s transform,.2s filter}
-.claim:active{transform:scale(.98)} .claim:hover{filter:brightness(1.08)}
-.hint{text-align:center;color:#e0e5e6;font-size:24px;margin:25px 0 0}
-.gear{position:fixed;right:18px;bottom:20px;width:58px;height:58px;border-radius:50%;border:2px solid var(--cyan);background:#071b20;color:#fff;font-size:28px;box-shadow:0 0 16px rgba(0,246,255,.55);z-index:20}
-.toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#050a0c;border:2px solid var(--cyan);border-radius:14px;padding:12px 18px;box-shadow:0 0 18px rgba(0,246,255,.5);transition:.25s;z-index:50}
+.title{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(38px,8.3vw,66px);
+  line-height:1.05;
+  font-weight:800;
+  letter-spacing:-1.7px;
+  color:var(--cyan);
+  text-shadow:0 0 8px rgba(0,234,244,.42);
+}
+
+.insta{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin:38px 0 27px;
+  font-size:clamp(25px,5.6vw,39px);
+  line-height:1;
+  font-weight:700;
+  color:var(--pink);
+  text-shadow:0 0 8px rgba(255,73,210,.18);
+}
+.insta-icon{
+  width:43px;height:43px;flex:0 0 43px;border-radius:12px;
+  background:linear-gradient(135deg,#6c22ff 5%,#ef168d 53%,#ffad18 100%);
+  position:relative;box-shadow:0 0 10px rgba(255,73,210,.25);
+}
+.insta-icon:before{
+  content:"";position:absolute;left:9px;top:9px;width:22px;height:22px;
+  border:3px solid #fff;border-radius:7px;
+}
+.insta-icon:after{
+  content:"";position:absolute;right:11px;top:11px;width:5px;height:5px;
+  border:2px solid #fff;border-radius:50%;
+}
+
+.hub{
+  width:min(760px,100%);
+  margin:auto;
+  padding:30px 30px 27px;
+  border-radius:27px;
+  background:var(--panel);
+  border:1px solid rgba(80,190,199,.12);
+  box-shadow:0 7px 25px rgba(0,0,0,.13),0 0 22px rgba(0,234,244,.10) inset;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+.card{
+  position:relative;
+  display:block;
+  width:100%;
+  aspect-ratio:1;
+  padding:0;
+  overflow:hidden;
+  border:0;
+  border-radius:18px;
+  background:#050708;
+  box-shadow:0 4px 11px rgba(0,0,0,.16);
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.card img{
+  width:100%;height:100%;display:block;
+  object-fit:cover;
+  image-rendering:auto;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.card:active{transform:scale(.975)}
+.card.selected{
+  box-shadow:0 0 0 3px #fff,0 0 12px rgba(0,234,244,.72);
+}
+.card.selected:after{
+  content:"✓";
+  position:absolute;right:7px;top:7px;
+  width:26px;height:26px;border-radius:50%;
+  display:grid;place-items:center;
+  background:rgba(0,15,18,.82);
+  color:#fff;font-size:17px;font-weight:800;
+  box-shadow:0 0 8px rgba(0,234,244,.45);
+}
+
+.uid-wrap{margin:30px auto 18px;max-width:600px}
+.uid{
+  width:100%;height:58px;
+  border:2px solid var(--cyan);
+  border-radius:30px;
+  background:#eef3fb;
+  color:#111;
+  padding:0 22px;
+  outline:none;
+  text-align:center;
+  font-size:19px;
+  box-shadow:0 0 10px rgba(0,234,244,.16);
+}
+.uid::placeholder{color:#6b7478}
+.uid:focus{box-shadow:0 0 0 3px rgba(0,234,244,.11),0 0 14px rgba(0,234,244,.23)}
+
+.claim{
+  display:block;width:min(88%,600px);height:67px;margin:0 auto;
+  border:0;border-radius:36px;
+  color:#fff;font-size:28px;font-weight:700;
+  background:linear-gradient(100deg,#10d9e6 0%,#1259ff 100%);
+  box-shadow:0 5px 15px rgba(0,0,0,.12),0 0 10px rgba(0,234,244,.14);
+  transition:transform .16s ease,filter .16s ease;
+}
+.claim:hover{filter:brightness(1.045)}
+.claim:active{transform:scale(.985)}
+.hint{text-align:center;color:var(--muted);font-size:19px;margin:20px 0 0}
+
+.gear{
+  position:fixed;right:16px;bottom:18px;z-index:30;
+  width:54px;height:54px;border-radius:50%;
+  border:2px solid var(--cyan);
+  background:#07191f;color:#fff;
+  display:grid;place-items:center;
+  font-size:25px;line-height:1;
+  box-shadow:0 0 10px rgba(0,234,244,.30);
+}
+
+.toast{
+  position:fixed;left:50%;bottom:82px;z-index:100;
+  transform:translate(-50%,15px);opacity:0;pointer-events:none;
+  background:#061116;color:#fff;
+  border:1px solid var(--cyan);border-radius:12px;
+  padding:10px 16px;font-size:14px;
+  box-shadow:0 0 14px rgba(0,234,244,.28);
+  transition:.2s ease;
+}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-.modal{position:fixed;inset:0;background:rgba(0,4,8,.82);display:none;align-items:center;justify-content:center;padding:20px;z-index:40}
+
+/* Admin */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(0,5,8,.82);display:none;align-items:center;justify-content:center;padding:14px}
 .modal.show{display:flex}
-.success-box{width:min(94%,780px);min-height:410px;background:#000;border:6px solid var(--cyan);border-radius:38px;box-shadow:0 0 25px var(--cyan),0 0 70px rgba(0,246,255,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:45px 20px;position:relative;overflow:hidden}
-.success-emoji{font-size:74px;line-height:1}
-.success-title{font-size:clamp(50px,10vw,82px);font-weight:800;color:var(--cyan);text-shadow:0 0 12px var(--cyan);margin:20px 0}
-.success-sub{font-size:clamp(25px,5vw,42px);color:#eee}
-.close{margin-top:28px;border:2px solid var(--cyan);border-radius:25px;padding:8px 22px;background:#071b20;color:#fff}
-.particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.particle{position:absolute;top:-90px;font-size:30px;animation:fall linear infinite}
-@keyframes fall{to{transform:translateY(560px) rotate(360deg);opacity:.2}}
-.admin{width:min(1000px,100%);max-height:92vh;overflow:auto;background:#07171c;border:4px solid var(--cyan);border-radius:28px;box-shadow:0 0 30px rgba(0,246,255,.45);padding:22px}
-.admin-head{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:18px}
-.admin h2{margin:0;color:var(--cyan);font-size:clamp(24px,5vw,38px)}
-.back{border:2px solid var(--cyan);border-radius:18px;background:#0a252c;color:#fff;padding:9px 15px}
-.admin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.admin-item{background:#102b32;border:2px solid rgba(0,246,255,.45);border-radius:18px;padding:12px}
-.admin-preview{width:100%;aspect-ratio:1;border-radius:13px;object-fit:cover;background:#000;display:block}
-.file-label{display:block;margin-top:10px;text-align:center;border:1px solid var(--cyan);border-radius:12px;padding:9px;color:#fff;background:#092027}
+.admin{
+  width:min(920px,100%);max-height:92vh;overflow:auto;
+  background:#08181e;border:2px solid var(--cyan);border-radius:24px;
+  box-shadow:0 0 22px rgba(0,234,244,.26);padding:18px;
+}
+.admin-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.admin h2{margin:0;color:var(--cyan);font-size:clamp(21px,5vw,32px)}
+.back,.reset{
+  border:1px solid rgba(0,234,244,.65);border-radius:16px;
+  background:#0a242b;color:#fff;padding:8px 13px;
+}
+.admin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.admin-item{background:#0d262d;border:1px solid rgba(0,234,244,.25);border-radius:15px;padding:9px}
+.admin-preview{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#000}
+.file-label{display:block;margin-top:8px;text-align:center;border:1px solid var(--cyan);border-radius:10px;padding:8px;font-size:13px}
 .file-label input{display:none}
-.url{width:100%;margin-top:9px;height:42px;border-radius:11px;border:1px solid var(--cyan);background:#061318;color:#fff;padding:0 10px;outline:none}
-.admin-actions{display:flex;gap:12px;justify-content:center;margin-top:22px}
-.save{border:0;border-radius:22px;padding:13px 28px;color:#fff;background:linear-gradient(100deg,#13dce9,#173cff);font-size:18px}
-.reset{border:1px solid #7aa;color:#dbe5e8;border-radius:22px;padding:13px 20px;background:#10242a}
+.url{width:100%;height:38px;margin-top:7px;border-radius:9px;border:1px solid rgba(0,234,244,.65);background:#061217;color:#fff;padding:0 9px;outline:none;font-size:12px}
+.admin-actions{display:flex;gap:10px;justify-content:center;margin-top:17px}
+.save{border:0;border-radius:18px;padding:11px 22px;color:#fff;background:linear-gradient(100deg,#10d9e6,#1259ff);font-weight:700}
+
+/* Success is on the same page so GitHub Pages can never 404 because success.html is missing. */
+.success-modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,7,10,.93);overflow:hidden}
+.success-modal.show{display:flex}
+.success-rain{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.fall{position:absolute;top:-70px;left:var(--left);font-size:var(--size);animation:fall var(--duration) linear var(--delay) infinite;opacity:.9}
+@keyframes fall{0%{transform:translate3d(0,-90px,0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translate3d(var(--drift),110vh,0) rotate(360deg);opacity:.08}}
+.success-box{
+  position:relative;z-index:2;width:min(94vw,620px);
+  padding:42px 22px 36px;min-height:330px;
+  border:3px solid var(--cyan);border-radius:28px;
+  background:#02080b;text-align:center;
+  box-shadow:0 0 20px rgba(0,234,244,.42),inset 0 0 20px rgba(0,234,244,.035);
+}
+.success-emoji{font-size:62px;line-height:1;margin-bottom:12px}
+.success-title{margin:7px 0 15px;color:var(--cyan);font-size:clamp(42px,10vw,68px);font-weight:800;text-shadow:0 0 10px rgba(0,234,244,.7)}
+.success-sub{font-size:clamp(19px,4.5vw,30px);color:#f0f3f4}
+.success-back{margin-top:26px;border:1px solid var(--cyan);border-radius:18px;padding:9px 19px;background:#081d23;color:#fff}
+
 @media(max-width:700px){
- .app{padding:24px 10px 80px}.hub{padding:24px 18px 25px;border-radius:25px}
- .grid{gap:16px}.card{border-width:4px;border-radius:22px}
- .insta{margin:28px 0 22px;font-size:28px}.insta-icon{width:42px;height:42px}
- .claim{height:65px;font-size:25px}.hint{font-size:20px}.uid{height:56px;font-size:17px}
- .admin-grid{grid-template-columns:1fr 1fr}
+  .app{padding:26px 10px 78px}
+  .title{font-size:40px;letter-spacing:-1.4px}
+  .insta{margin:31px 0 23px;font-size:28px;gap:12px}
+  .insta-icon{width:40px;height:40px;flex-basis:40px}
+  .hub{padding:22px 17px 23px;border-radius:23px}
+  .grid{gap:15px}
+  .card{border-radius:15px}
+  .uid-wrap{margin-top:25px}
+  .uid{height:54px;font-size:17px}
+  .claim{height:62px;font-size:24px;width:88%}
+  .hint{font-size:17px;margin-top:18px}
 }
 @media(max-width:430px){
- .grid{gap:12px}.card{border-width:3px;border-radius:18px}.hub{padding:18px 12px 22px}
- .admin-grid{grid-template-columns:1fr}
+  .app{padding-left:9px;padding-right:9px}
+  .hub{padding:18px 12px 20px}
+  .grid{gap:12px}
+  .card{border-radius:13px}
+  .claim{font-size:22px}
+  .admin-grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -89,29 +238,39 @@ button{cursor:pointer}
   <section class="hub">
     <div class="grid" id="rewardGrid"></div>
     <div class="uid-wrap">
-      <input id="uid" class="uid" inputmode="numeric" maxlength="20" placeholder="Enter Game UID (e.g., 12345678)" aria-label="Game UID">
+      <input id="uid" class="uid" inputmode="numeric" maxlength="20" placeholder="Enter Game UID" aria-label="Game UID">
     </div>
-    <button id="claim" class="claim">CLAIM REWARD</button>
+    <button id="claim" class="claim" type="button">CLAIM REWARD</button>
     <p class="hint">✨ Tap any reward card to select ✨</p>
   </section>
 </main>
 
-<button class="gear" id="adminOpen" aria-label="Open Admin Panel">⚙</button>
-<div class="toast" id="toast"></div>
+<button class="gear" id="adminOpen" type="button" aria-label="Open Admin Panel">⚙</button>
+<div class="toast" id="toast" role="status"></div>
 
-
-
-<div class="modal" id="adminModal">
+<!-- Admin panel -->
+<div class="modal" id="adminModal" aria-hidden="true">
   <section class="admin">
     <div class="admin-head">
-      <h2>ADMIN PANEL - MANAGE REWARDS</h2>
-      <button class="back" id="adminBack">Back</button>
+      <h2>ADMIN PANEL</h2>
+      <button class="back" id="adminBack" type="button">Back</button>
     </div>
     <div class="admin-grid" id="adminGrid"></div>
     <div class="admin-actions">
-      <button class="save" id="saveChanges">Save Changes</button>
-      <button class="reset" id="resetImages">Reset Images</button>
+      <button class="save" id="saveChanges" type="button">Save Changes</button>
+      <button class="reset" id="resetImages" type="button">Reset Images</button>
     </div>
+  </section>
+</div>
+
+<!-- Integrated success screen: no second HTML page, so no GitHub Pages 404. -->
+<div class="success-modal" id="successModal" aria-hidden="true">
+  <div class="success-rain" id="successRain"></div>
+  <section class="success-box">
+    <div class="success-emoji">🎉 🎁</div>
+    <div class="success-title">SUCCESS!</div>
+    <div class="success-sub">Your reward has been claimed</div>
+    <button class="success-back" id="successBack" type="button">Back to Rewards</button>
   </section>
 </div>
 
@@ -119,18 +278,18 @@ button{cursor:pointer}
 const defaultImages = Array.from({length:9},(_,i)=>`reward_${i+1}.jpg`);
 const STORAGE_KEY = "ff_reward_hub_images_v1";
 const CLAIM_KEY = "claimed_items";
-
 let images = loadImages();
 let selected = new Set();
 
 function loadImages(){
   try{
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if(saved && Array.isArray(saved) && saved.length===9) return saved;
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(Array.isArray(saved)&&saved.length===9) return saved;
   }catch(e){}
   return [...defaultImages];
 }
-function saveImages(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(images)); }
+function saveImages(){localStorage.setItem(STORAGE_KEY,JSON.stringify(images));}
+function escapeAttr(v){return String(v).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 
 function renderHome(){
   const grid=document.getElementById("rewardGrid");
@@ -142,11 +301,13 @@ function renderHome(){
     b.title=`Reward ${i+1}`;
     const img=document.createElement("img");
     img.alt=`Reward ${i+1}`;
+    img.loading="eager";
+    img.decoding="async";
     img.src=src;
-    img.onerror=()=>{ img.style.opacity=".25"; };
+    img.onerror=()=>{img.style.opacity=".25"};
     b.appendChild(img);
     b.onclick=()=>{
-      selected.has(i)?selected.delete(i):selected.add(i);
+      if(selected.has(i)) selected.delete(i); else selected.add(i);
       renderHome();
     };
     grid.appendChild(b);
@@ -162,7 +323,7 @@ function renderAdmin(){
     item.innerHTML=`
       <img class="admin-preview" id="preview-${i}" src="${escapeAttr(src)}" alt="Reward ${i+1}">
       <label class="file-label">Upload New Image
-        <input type="file" accept="image/*" data-index="${i}">
+        <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-index="${i}">
       </label>
       <input class="url" id="url-${i}" data-index="${i}" placeholder="Image URL" value="${escapeAttr(src)}">
     `;
@@ -171,104 +332,131 @@ function renderAdmin(){
 
   grid.querySelectorAll(".url").forEach(input=>{
     input.addEventListener("input",()=>{
-      const i=+input.dataset.index;
-      const value=input.value.trim();
-      images[i]=value;
-      document.getElementById(`preview-${i}`).src=value;
+      const i=Number(input.dataset.index);
+      images[i]=input.value.trim();
+      document.getElementById(`preview-${i}`).src=images[i];
       renderHome();
     });
   });
 
   grid.querySelectorAll('input[type="file"]').forEach(input=>{
-    input.addEventListener("change", async ()=>{
-      const file=input.files?.[0];
+    input.addEventListener("change",()=>{
+      const file=input.files&&input.files[0];
       if(!file)return;
-      const i=+input.dataset.index;
-      try{
-        const data=await compressImage(file);
+      const i=Number(input.dataset.index);
+      compressImage(file).then(data=>{
         images[i]=data;
         document.getElementById(`preview-${i}`).src=data;
         document.getElementById(`url-${i}`).value=data;
         renderHome();
-        showToast("Image updated live");
-      }catch(e){ showToast("Could not read image"); }
+        showToast("Image updated");
+      }).catch(()=>showToast("Could not read image"));
     });
   });
 }
 
-function escapeAttr(v){
-  return String(v).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-}
 function compressImage(file){
   return new Promise((resolve,reject)=>{
     const reader=new FileReader();
     reader.onload=()=>{
       const img=new Image();
       img.onload=()=>{
-        const max=700, scale=Math.min(1,max/Math.max(img.width,img.height));
+        const max=1000;
+        const scale=Math.min(1,max/Math.max(img.width,img.height));
         const c=document.createElement("canvas");
         c.width=Math.max(1,Math.round(img.width*scale));
         c.height=Math.max(1,Math.round(img.height*scale));
         c.getContext("2d").drawImage(img,0,0,c.width,c.height);
-        resolve(c.toDataURL("image/jpeg",.82));
+        resolve(c.toDataURL("image/jpeg",.90));
       };
-      img.onerror=reject; img.src=reader.result;
+      img.onerror=reject;
+      img.src=reader.result;
     };
-    reader.onerror=reject; reader.readAsDataURL(file);
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
   });
 }
 
 function showToast(msg){
   const t=document.getElementById("toast");
   t.textContent=msg;t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),1800);
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>t.classList.remove("show"),1800);
 }
 
-function particles(){
-  const box=document.getElementById("particles");
-  box.innerHTML="";
-  const icons=["💎","🎁","❤️","⚡","✨","🎁"];
-  for(let i=0;i<22;i++){
-    const s=document.createElement("span");
-    s.className="particle";
-    s.textContent=icons[i%icons.length];
-    s.style.left=(Math.random()*100)+"%";
-    s.style.animationDuration=(3+Math.random()*4)+"s";
-    s.style.animationDelay=(-Math.random()*5)+"s";
-    s.style.fontSize=(20+Math.random()*25)+"px";
-    box.appendChild(s);
+function openSuccess(){
+  const modal=document.getElementById("successModal");
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+  makeSuccessRain();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function closeSuccess(){
+  document.getElementById("successModal").classList.remove("show");
+  document.getElementById("successModal").setAttribute("aria-hidden","true");
+}
+function makeSuccessRain(){
+  const rain=document.getElementById("successRain");
+  rain.innerHTML="";
+  const icons=["💎","🎁","❤️","⚡","✨","🌸","🌺","🌼","💐","🎊","🎉"];
+  for(let i=0;i<42;i++){
+    const el=document.createElement("span");
+    el.className="fall";
+    el.textContent=icons[Math.floor(Math.random()*icons.length)];
+    el.style.setProperty("--left",(Math.random()*100)+"%");
+    el.style.setProperty("--size",(16+Math.random()*25)+"px");
+    el.style.setProperty("--duration",(3.5+Math.random()*4.5)+"s");
+    el.style.setProperty("--delay",(-Math.random()*6)+"s");
+    el.style.setProperty("--drift",(-80+Math.random()*160)+"px");
+    rain.appendChild(el);
   }
 }
 
-document.getElementById("claim").onclick=()=>{
+document.getElementById("claim").addEventListener("click",()=>{
   const uid=document.getElementById("uid").value.trim();
   if(selected.size===0){showToast("Please select at least one reward");return}
   if(!/^\d{8,}$/.test(uid)){showToast("Game UID must contain at least 8 digits");return}
+
   let claims=[];
-  try{claims=JSON.parse(localStorage.getItem(CLAIM_KEY)||"[]")}catch(e){}
+  try{claims=JSON.parse(localStorage.getItem(CLAIM_KEY)||"[]")}catch(e){claims=[]}
   const items=[...selected];
   claims.push({uid,items,time:new Date().toISOString()});
-  localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));
-  // Save the current claim, then switch immediately to the dedicated success page.
-  localStorage.setItem("ff_pending_success", JSON.stringify({uid,items,time:Date.now()}));
-  window.location.href="success.html";
-};
+  try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims))}catch(e){}
 
-document.getElementById("adminOpen").onclick=()=>{
+  /* IMPORTANT: do NOT navigate to success.html. The success screen is built into this file. */
+  openSuccess();
+});
+
+document.getElementById("successBack").addEventListener("click",()=>{
+  closeSuccess();
+  selected.clear();
+  renderHome();
+});
+
+document.getElementById("adminOpen").addEventListener("click",()=>{
   renderAdmin();
   document.getElementById("adminModal").classList.add("show");
-};
-document.getElementById("adminBack").onclick=()=>document.getElementById("adminModal").classList.remove("show");
-
-document.getElementById("saveChanges").onclick=()=>{
+  document.getElementById("adminModal").setAttribute("aria-hidden","false");
+});
+document.getElementById("adminBack").addEventListener("click",()=>{
+  document.getElementById("adminModal").classList.remove("show");
+  document.getElementById("adminModal").setAttribute("aria-hidden","true");
+});
+document.getElementById("adminModal").addEventListener("click",e=>{
+  if(e.target.id==="adminModal"){
+    document.getElementById("adminModal").classList.remove("show");
+  }
+});
+document.getElementById("saveChanges").addEventListener("click",()=>{
+  try{saveImages();showToast("Changes saved")}catch(e){showToast("Could not save changes")}
+});
+document.getElementById("resetImages").addEventListener("click",()=>{
+  images=[...defaultImages];
   saveImages();
   renderHome();
-  showToast("Changes saved");
-};
-document.getElementById("resetImages").onclick=()=>{
-  if(!confirm("Reset all reward images to the original 9 images?"))return;
-  images=[...defaultImages];saveImages();renderAdmin();renderHome();showToast("Images reset");
-};
+  renderAdmin();
+  showToast("Images reset");
+});
 
 renderHome();
 </script>

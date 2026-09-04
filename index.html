@@ -59,15 +59,21 @@
         }
 
         .instagram-icon {
-            width: 22px;
-            height: 22px;
+            width: 26px;
+            height: 26px;
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            border-radius: 6px;
+            border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 13px;
+            padding: 3px;
+        }
+
+        .instagram-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
         }
 
         /* Grid UI */
@@ -189,7 +195,7 @@
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 10px;
             width: 100%;
             margin-bottom: 15px;
         }
@@ -198,27 +204,33 @@
             background: #0b1d28;
             border: 1px solid #00e5ff;
             border-radius: 8px;
-            padding: 6px;
+            padding: 8px 5px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
         }
 
         .admin-card-item img {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
         }
 
-        .admin-card-item input {
+        .upload-btn-label {
             width: 100%;
             font-size: 9px;
-            padding: 4px;
-            background: #050d12;
-            border: 1px solid #00e5ff;
+            padding: 5px 2px;
+            background: #0088ff;
             color: white;
+            text-align: center;
             border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .file-input {
+            display: none;
         }
 
         .admin-btn {
@@ -311,15 +323,19 @@
 
 <div class="mobile-container">
     
+    <!-- HOME PAGE -->
     <div id="homePage" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
         <div class="title">FF REWARD HUB</div>
         <div class="social-tag">
-            <div class="instagram-icon">📸</div>
-            <span>@Goldi_yarr</span>
+            <div class="instagram-icon">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+            </div>
+            <span>@goldi_yarr</span>
         </div>
 
         <div class="reward-grid" id="rewardGrid">
-            </div>
+            <!-- 9 Cards Dynamic -->
+        </div>
 
         <div class="input-group">
             <input type="text" class="uid-input" id="gameUid" placeholder="Enter Game UID (e.g., 12345678)">
@@ -331,12 +347,14 @@
         <div class="admin-gear" onclick="toggleAdmin(true)">⚙️</div>
     </div>
 
+    <!-- ADMIN PANEL PAGE -->
     <div id="adminPage" class="admin-page">
         <div class="title" style="font-size: 20px;">ADMIN PANEL</div>
-        <div style="font-size: 12px; color: #8fa3b0; margin-bottom: 15px;">इमेज URL बदलें और सेव करें</div>
+        <div style="font-size: 12px; color: #8fa3b0; margin-bottom: 15px;">PNG इमेज अपलोड करें और सेव करें</div>
 
         <div class="admin-grid" id="adminGrid">
-            </div>
+            <!-- 9 Dynamic Upload Items -->
+        </div>
 
         <button class="admin-btn" onclick="saveAdminChanges()">Save Changes</button>
         <button class="back-btn" onclick="toggleAdmin(false)">Back to Home</button>
@@ -344,6 +362,7 @@
 
 </div>
 
+<!-- SUCCESS POPUP -->
 <div class="modal-overlay" id="successModal">
     <div class="falling-container" id="fallingContainer"></div>
     <div class="modal-box">
@@ -357,24 +376,25 @@
 <script>
     // Default Images Placeholder Set
     const defaultImages = [
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Bundle+1",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Mask",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Car+Skin",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Emote+1",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Emote+2",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Emote+3",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Gun+Skin",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Dress",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Hair"
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+1",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+2",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+3",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+4",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+5",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+6",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+7",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+8",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+9"
     ];
 
     let currentImages = JSON.parse(localStorage.getItem('ff_reward_images')) || defaultImages;
+    let tempImages = [...currentImages];
 
     // Render Main Grid
     function renderGrid() {
         const grid = document.getElementById('rewardGrid');
         grid.innerHTML = '';
-        currentImages.forEach((imgSrc, index) => {
+        currentImages.forEach((imgSrc) => {
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => card.classList.toggle('selected');
@@ -387,20 +407,36 @@
         });
     }
 
-    // Render Admin Grid
+    // Render Admin Grid with direct file upload
     function renderAdminGrid() {
+        tempImages = [...currentImages];
         const adminGrid = document.getElementById('adminGrid');
         adminGrid.innerHTML = '';
-        currentImages.forEach((imgSrc, index) => {
+        tempImages.forEach((imgSrc, index) => {
             const item = document.createElement('div');
             item.className = 'admin-card-item';
             
             item.innerHTML = `
                 <img src="${imgSrc}" id="admin-preview-${index}">
-                <input type="text" value="${imgSrc}" id="admin-input-${index}" placeholder="Image URL">
+                <label for="file-upload-${index}" class="upload-btn-label">Upload PNG</label>
+                <input type="file" id="file-upload-${index}" class="file-input" accept="image/*" onchange="previewImage(${index}, event)">
             `;
             adminGrid.appendChild(item);
         });
+    }
+
+    // Handle Local Image Upload Preview
+    function previewImage(index, event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                document.getElementById(`admin-preview-${index}`).src = base64Img;
+                tempImages[index] = base64Img;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     // Toggle Admin Panel View
@@ -412,10 +448,7 @@
 
     // Save Admin Changes to LocalStorage
     function saveAdminChanges() {
-        for (let i = 0; i < 9; i++) {
-            const val = document.getElementById(`admin-input-${i}`).value;
-            if (val) currentImages[i] = val;
-        }
+        currentImages = [...tempImages];
         localStorage.setItem('ff_reward_images', JSON.stringify(currentImages));
         renderGrid();
         toggleAdmin(false);

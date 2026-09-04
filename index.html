@@ -58,22 +58,23 @@
             color: #ff007f;
         }
 
+        /* Fixed Inbuilt Instagram Icon */
         .instagram-icon {
-            width: 26px;
-            height: 26px;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            border-radius: 7px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3px;
+            padding: 4px;
+            box-shadow: 0 0 10px rgba(220, 39, 67, 0.5);
         }
 
-        .instagram-icon img {
+        .instagram-icon svg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
+            display: block;
         }
 
         /* Grid UI */
@@ -99,12 +100,14 @@
             overflow: hidden;
             box-shadow: inset 0 0 8px rgba(0, 229, 255, 0.3), 0 0 8px rgba(0, 229, 255, 0.3);
             transition: transform 0.2s, border-color 0.2s;
+            padding: 5px;
         }
 
         .card img {
             width: 85%;
             height: 85%;
             object-fit: contain;
+            pointer-events: none;
         }
 
         /* Neon Blink Animation on Selection */
@@ -171,8 +174,8 @@
             position: absolute;
             bottom: 15px;
             right: 15px;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: #0d1f2d;
             border: 1.5px solid #00e5ff;
@@ -181,7 +184,11 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
-            font-size: 18px;
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+        .admin-gear:hover {
+            transform: rotate(45deg);
         }
 
         /* Admin Panel Page View */
@@ -215,12 +222,13 @@
             width: 50px;
             height: 50px;
             object-fit: contain;
+            border-radius: 4px;
         }
 
         .upload-btn-label {
             width: 100%;
-            font-size: 9px;
-            padding: 5px 2px;
+            font-size: 10px;
+            padding: 6px 2px;
             background: #0088ff;
             color: white;
             text-align: center;
@@ -235,7 +243,7 @@
 
         .admin-btn {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: linear-gradient(90deg, #0055ff, #00bfff);
             border: none;
             color: white;
@@ -243,6 +251,7 @@
             border-radius: 20px;
             cursor: pointer;
             margin-top: 8px;
+            font-size: 14px;
         }
 
         .back-btn {
@@ -326,9 +335,15 @@
     <!-- HOME PAGE -->
     <div id="homePage" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
         <div class="title">FF REWARD HUB</div>
+        
         <div class="social-tag">
             <div class="instagram-icon">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+                <!-- Direct Vector SVG (Always 100% visible and clean) -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
             </div>
             <span>@goldi_yarr</span>
         </div>
@@ -344,19 +359,19 @@
         <button class="claim-btn" onclick="handleClaim(event)">CLAIM REWARD</button>
         <div class="instruction">✨ Tap any reward card to select ✨</div>
 
-        <div class="admin-gear" onclick="toggleAdmin(true)">⚙️</div>
+        <div class="admin-gear" onclick="toggleAdmin(true)" title="Admin Panel">⚙️</div>
     </div>
 
     <!-- ADMIN PANEL PAGE -->
     <div id="adminPage" class="admin-page">
         <div class="title" style="font-size: 20px;">ADMIN PANEL</div>
-        <div style="font-size: 12px; color: #8fa3b0; margin-bottom: 15px;">PNG इमेज अपलोड करें और सेव करें</div>
+        <div style="font-size: 12px; color: #8fa3b0; margin-bottom: 15px;">PNG इमेज अपलोड करें और 'Save' दबाएँ</div>
 
         <div class="admin-grid" id="adminGrid">
             <!-- 9 Dynamic Upload Items -->
         </div>
 
-        <button class="admin-btn" onclick="saveAdminChanges()">Save Changes</button>
+        <button class="admin-btn" onclick="saveAdminChanges()">💾 Save & Apply</button>
         <button class="back-btn" onclick="toggleAdmin(false)">Back to Home</button>
     </div>
 
@@ -374,20 +389,29 @@
 </div>
 
 <script>
-    // Default Images Placeholder Set
-    const defaultImages = [
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+1",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+2",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+3",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+4",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+5",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+6",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+7",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+8",
-        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=PNG+9"
-    ];
+    // Offline Ready Default SVGs
+    function createDefaultSvg(index) {
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+            <rect width="100" height="100" rx="12" fill="#0d1f2d"/>
+            <text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle" fill="#00e5ff" font-size="28" font-weight="bold">🎁</text>
+            <text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" fill="#00e5ff" font-size="12" font-family="sans-serif" font-weight="bold">REWARD ${index + 1}</text>
+        </svg>`;
+        return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
 
-    let currentImages = JSON.parse(localStorage.getItem('ff_reward_images')) || defaultImages;
+    const defaultImages = Array.from({ length: 9 }, (_, i) => createDefaultSvg(i));
+
+    let currentImages = [];
+    try {
+        const stored = localStorage.getItem('ff_reward_images');
+        currentImages = stored ? JSON.parse(stored) : defaultImages;
+        if (!Array.isArray(currentImages) || currentImages.length !== 9) {
+            currentImages = defaultImages;
+        }
+    } catch(e) {
+        currentImages = defaultImages;
+    }
+
     let tempImages = [...currentImages];
 
     // Render Main Grid
@@ -401,13 +425,14 @@
             
             const img = document.createElement('img');
             img.src = imgSrc;
+            img.alt = 'Reward';
             
             card.appendChild(img);
             grid.appendChild(card);
         });
     }
 
-    // Render Admin Grid with direct file upload
+    // Render Admin Grid
     function renderAdminGrid() {
         tempImages = [...currentImages];
         const adminGrid = document.getElementById('adminGrid');
@@ -417,7 +442,7 @@
             item.className = 'admin-card-item';
             
             item.innerHTML = `
-                <img src="${imgSrc}" id="admin-preview-${index}">
+                <img src="${imgSrc}" id="admin-preview-${index}" alt="Slot ${index+1}">
                 <label for="file-upload-${index}" class="upload-btn-label">Upload PNG</label>
                 <input type="file" id="file-upload-${index}" class="file-input" accept="image/*" onchange="previewImage(${index}, event)">
             `;
@@ -425,15 +450,41 @@
         });
     }
 
-    // Handle Local Image Upload Preview
+    // Handle Local Image Upload with Canvas Auto-Optimization (prevents LocalStorage crash)
     function previewImage(index, event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Img = e.target.result;
-                document.getElementById(`admin-preview-${index}`).src = base64Img;
-                tempImages[index] = base64Img;
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxDim = 250; // Optimal size for fast loading and local storage
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxDim) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        }
+                    } else {
+                        if (height > maxDim) {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const optimizedBase64 = canvas.toDataURL('image/png');
+                    document.getElementById(`admin-preview-${index}`).src = optimizedBase64;
+                    tempImages[index] = optimizedBase64;
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
@@ -443,18 +494,26 @@
     function toggleAdmin(show) {
         document.getElementById('homePage').style.display = show ? 'none' : 'flex';
         document.getElementById('adminPage').style.display = show ? 'flex' : 'none';
-        if (show) renderAdminGrid();
+        if (show) {
+            renderAdminGrid();
+        }
     }
 
-    // Save Admin Changes to LocalStorage
+    // Save Admin Changes to LocalStorage and refresh Home Grid
     function saveAdminChanges() {
         currentImages = [...tempImages];
-        localStorage.setItem('ff_reward_images', JSON.stringify(currentImages));
+        try {
+            localStorage.setItem('ff_reward_images', JSON.stringify(currentImages));
+        } catch (err) {
+            console.error("Storage error:", err);
+            alert("चेतावनी: इमेज का साइज़ बड़ा होने के कारण स्टोरेज में समस्या आ सकती है।");
+        }
         renderGrid();
         toggleAdmin(false);
+        alert('इमेज सफलतापूर्वक सेव हो गई और होम पेज पर अपडेट हो गई!');
     }
 
-    // Claim Action (Without page reload)
+    // Claim Action
     function handleClaim(e) {
         if(e) e.preventDefault();
         
@@ -471,7 +530,6 @@
             return;
         }
 
-        // Show Success Popup
         showSuccessModal();
     }
 

@@ -1,295 +1,473 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#061b20">
-<title>FF Reward Hub</title>
-<style>
-:root{
-  --bg:#071a20;
-  --bg2:#0b242b;
-  --panel:rgba(48,82,92,.72);
-  --cyan:#00eaf4;
-  --cyan-soft:rgba(0,234,244,.20);
-  --pink:#ff49d2;
-  --text:#f8fbfc;
-  --muted:#d5dde0;
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-body{overflow-x:hidden}
-button,input{font:inherit}
-button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF REWARD HUB</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
 
-.app{
-  min-height:100vh;
-  padding:34px 14px 80px;
-  background:
-    radial-gradient(circle at 50% 24%,rgba(0,234,244,.055),transparent 29%),
-    linear-gradient(180deg,#071b21 0%,#0a242b 55%,#071a20 100%);
-}
-.header{text-align:center}
-.title{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:clamp(38px,8.3vw,66px);
-  line-height:1.05;
-  font-weight:800;
-  letter-spacing:-1.7px;
-  color:var(--cyan);
-  text-shadow:0 0 8px rgba(0,234,244,.42);
-}
+        body {
+            background-color: #061016;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 15px 0;
+            overflow-x: hidden;
+        }
 
-.socials{
-  display:flex;align-items:center;justify-content:center;gap:14px;
-  margin:36px 0 26px;
-  font-size:clamp(24px,5.4vw,38px);line-height:1;font-weight:700;
-  color:var(--pink);text-shadow:0 0 8px rgba(255,73,210,.16);
-}
-.social-link{display:flex;align-items:center;justify-content:center;gap:10px}
-.social-icon{width:42px;height:42px;display:block;flex:0 0 42px}
-.youtube-icon{width:47px;height:34px;flex-basis:47px}
+        .mobile-container {
+            width: 100%;
+            max-width: 420px;
+            background: #09171f;
+            border-radius: 16px;
+            padding: 20px 15px 30px;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
+        /* Header UI */
+        .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #00e5ff;
+            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
 
-.hub{
-  width:min(760px,100%);
-  margin:auto;
-  padding:30px 30px 27px;
-  border-radius:27px;
-  background:var(--panel);
-  border:1px solid rgba(80,190,199,.12);
-  box-shadow:0 7px 25px rgba(0,0,0,.13),0 0 22px rgba(0,234,244,.10) inset;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-}
-.card{
-  position:relative;
-  display:block;
-  width:100%;
-  aspect-ratio:1;
-  padding:0;
-  overflow:hidden;
-  border:2px solid transparent;
-  border-radius:18px;
-  background:#050708;
-  box-shadow:0 4px 11px rgba(0,0,0,.16);
-  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
-}
-.card img{
-  width:100%;height:100%;display:block;
-  object-fit:cover;
-  image-rendering:auto;
-  user-select:none;
-  -webkit-user-drag:none;
-}
-.card:active{transform:scale(.975)}
-.card.selected{
-  border-color:var(--cyan);
-  box-shadow:0 0 0 1px rgba(0,234,244,.45),0 0 8px rgba(0,234,244,.55),0 0 16px rgba(0,234,244,.18);
-}
-.card.selected:after{
-  content:"✓";
-  position:absolute;right:6px;top:6px;
-  width:22px;height:22px;border-radius:50%;
-  display:grid;place-items:center;
-  background:rgba(2,18,22,.82);
-  color:#fff;font-size:14px;font-weight:800;
-  border:1px solid rgba(0,234,244,.55);
-  box-shadow:0 0 5px rgba(0,234,244,.28);
-}
+        .social-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff007f;
+        }
 
-.uid-wrap{margin:30px auto 18px;max-width:600px}
-.uid{
-  width:min(58%,340px);height:48px;
-  border:2px solid rgba(0,234,244,.82);
-  border-radius:30px;
-  background:#eef3fb;
-  color:#111;
-  padding:0 18px;
-  outline:none;
-  text-align:center;
-  font-size:19px;
-  box-shadow:0 0 7px rgba(0,234,244,.10);
-}
-.uid::placeholder{color:#6b7478}
-.uid:focus{box-shadow:0 0 0 3px rgba(0,234,244,.11),0 0 14px rgba(0,234,244,.23)}
+        .instagram-icon {
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+        }
 
-.claim{
-  display:block;width:min(88%,600px);height:67px;margin:0 auto;
-  border:0;border-radius:36px;
-  color:#fff;font-size:28px;font-weight:700;
-  background:linear-gradient(100deg,#10d9e6 0%,#1259ff 100%);
-  box-shadow:0 5px 15px rgba(0,0,0,.12),0 0 10px rgba(0,234,244,.14);
-  transition:transform .16s ease,filter .16s ease;
-}
-.claim:hover{filter:brightness(1.045)}
-.claim:active{transform:scale(.985)}
-.hint{text-align:center;color:var(--muted);font-size:19px;margin:20px 0 0}
+        /* Grid UI */
+        .reward-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
 
-.gear{
-  position:fixed;left:12px;top:12px;z-index:70;
-  width:42px;height:42px;border-radius:12px;
-  border:1px solid rgba(0,234,244,.65);
-  background:rgba(5,20,25,.88);color:#fff;
-  display:grid;place-items:center;
-  font-size:0;line-height:1;
-  box-shadow:0 0 8px rgba(0,234,244,.18);
-  backdrop-filter:blur(5px);
-  touch-action:manipulation;
-  pointer-events:auto;
-}
+        .card {
+            background: #0d1f2d;
+            border: 2px solid #00e5ff;
+            border-radius: 12px;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 8px rgba(0, 229, 255, 0.3), 0 0 8px rgba(0, 229, 255, 0.3);
+            transition: transform 0.2s, border-color 0.2s;
+        }
 
-.toast{
-  position:fixed;left:50%;bottom:82px;z-index:100;
-  transform:translate(-50%,15px);opacity:0;pointer-events:none;
-  background:#061116;color:#fff;
-  border:1px solid var(--cyan);border-radius:12px;
-  padding:10px 16px;font-size:14px;
-  box-shadow:0 0 14px rgba(0,234,244,.28);
-  transition:.2s ease;
-}
-.toast.show{opacity:1;transform:translate(-50%,0)}
+        .card img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+        }
 
-/* Admin */
-.modal{position:fixed;inset:0;z-index:80;background:rgba(0,5,8,.82);display:none;align-items:center;justify-content:center;padding:14px}
-.modal.show{display:flex}
-.admin{
-  width:min(920px,100%);max-height:92vh;overflow:auto;
-  background:#08181e;border:2px solid var(--cyan);border-radius:24px;
-  box-shadow:0 0 22px rgba(0,234,244,.26);padding:18px;
-}
-.admin-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
-.admin h2{margin:0;color:var(--cyan);font-size:clamp(21px,5vw,32px)}
-.back,.reset{
-  border:1px solid rgba(0,234,244,.65);border-radius:16px;
-  background:#0a242b;color:#fff;padding:8px 13px;
-}
-.admin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.admin-item{background:#0d262d;border:1px solid rgba(0,234,244,.25);border-radius:15px;padding:9px}
-.admin-preview{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#000}
-.file-label{display:block;margin-top:8px;text-align:center;border:1px solid var(--cyan);border-radius:10px;padding:8px;font-size:13px}
-.file-label input{display:none}
-.url{width:100%;height:38px;margin-top:7px;border-radius:9px;border:1px solid rgba(0,234,244,.65);background:#061217;color:#fff;padding:0 9px;outline:none;font-size:12px}
-.admin-actions{display:flex;gap:10px;justify-content:center;margin-top:17px}
-.save{border:0;border-radius:18px;padding:11px 22px;color:#fff;background:linear-gradient(100deg,#10d9e6,#1259ff);font-weight:700}
+        /* Neon Blink Animation on Selection */
+        @keyframes neonBlink {
+            0% { box-shadow: 0 0 5px #00e5ff, inset 0 0 5px #00e5ff; border-color: #00e5ff; }
+            50% { box-shadow: 0 0 20px #00ffff, inset 0 0 15px #00ffff; border-color: #ffffff; }
+            100% { box-shadow: 0 0 12px #00e5ff, inset 0 0 8px #00e5ff; border-color: #00e5ff; }
+        }
 
-/* Success is on the same page so GitHub Pages can never 404 because success.html is missing. */
-.success-modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,7,10,.93);overflow:hidden}
-.success-modal.show{display:flex}
-.success-rain{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.fall{position:absolute;top:-70px;left:var(--left);font-size:var(--size);animation:fall var(--duration) linear var(--delay) infinite;opacity:.9}
-@keyframes fall{0%{transform:translate3d(0,-90px,0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translate3d(var(--drift),110vh,0) rotate(360deg);opacity:.08}}
-.success-box{
-  position:relative;z-index:2;width:min(94vw,620px);
-  padding:42px 22px 36px;min-height:330px;
-  border:3px solid var(--cyan);border-radius:28px;
-  background:#02080b;text-align:center;
-  box-shadow:0 0 20px rgba(0,234,244,.42),inset 0 0 20px rgba(0,234,244,.035);
-}
-.success-emoji{font-size:62px;line-height:1;margin-bottom:12px}
-.success-title{margin:7px 0 15px;color:var(--cyan);font-size:clamp(42px,10vw,68px);font-weight:800;text-shadow:0 0 10px rgba(0,234,244,.7)}
-.success-sub{font-size:clamp(19px,4.5vw,30px);color:#f0f3f4}
-.success-back{margin-top:26px;border:1px solid var(--cyan);border-radius:18px;padding:9px 19px;background:#081d23;color:#fff}
+        .card.selected {
+            border-color: #00ffff;
+            animation: neonBlink 0.6s ease-in-out infinite alternate;
+            transform: scale(0.96);
+        }
 
-@media(max-width:700px){
-  .app{padding:26px 10px 78px}
-  .title{font-size:40px;letter-spacing:-1.4px}
-  .socials{margin:30px 0 22px;font-size:27px;gap:11px}
-  .social-icon{width:38px;height:38px;flex-basis:38px}
-  .youtube-icon{width:42px;height:30px;flex-basis:42px}
-    .hub{padding:22px 17px 23px;border-radius:23px}
-  .grid{gap:15px}
-  .card{border-radius:15px}
-  .uid-wrap{margin-top:25px}
-  .uid{height:46px;font-size:16px;width:58%;min-width:210px;max-width:340px}
-  .claim{height:62px;font-size:24px;width:88%}
-  .hint{font-size:17px;margin-top:18px}
-}
-@media(max-width:700px){
-  .gear{left:10px;top:10px;width:39px;height:39px;border-radius:11px}
-}
-@media(max-width:430px){
-  .app{padding-left:9px;padding-right:9px}
-  .hub{padding:18px 12px 20px}
-  .grid{gap:12px}
-  .card{border-radius:13px}
-  .claim{font-size:22px}
-  .admin-grid{grid-template-columns:1fr 1fr}
-}
-</style>
+        /* Medium Sized UID Input */
+        .input-group {
+            width: 85%;
+            margin-bottom: 15px;
+        }
+
+        .uid-input {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            background: #0a1924;
+            border: 1.5px solid #00e5ff;
+            border-radius: 20px;
+            color: #fff;
+            text-align: center;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+        }
+
+        .uid-input::placeholder {
+            color: #8fa3b0;
+            font-size: 13px;
+        }
+
+        /* Buttons */
+        .claim-btn {
+            width: 85%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(90deg, #0088ff, #00e5ff);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .instruction {
+            font-size: 12px;
+            color: #e0f7fa;
+            margin-top: 2px;
+        }
+
+        .admin-gear {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #0d1f2d;
+            border: 1.5px solid #00e5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+            font-size: 18px;
+        }
+
+        /* Admin Panel Page View */
+        .admin-page {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .admin-card-item {
+            background: #0b1d28;
+            border: 1px solid #00e5ff;
+            border-radius: 8px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .admin-card-item img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .admin-card-item input {
+            width: 100%;
+            font-size: 9px;
+            padding: 4px;
+            background: #050d12;
+            border: 1px solid #00e5ff;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(90deg, #0055ff, #00bfff);
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid #00e5ff;
+            color: #00e5ff;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        /* Success Modal Popup */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: #09171f;
+            border: 2px solid #00e5ff;
+            border-radius: 16px;
+            width: 80%;
+            max-width: 320px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 0 25px #00e5ff;
+            position: relative;
+        }
+
+        .modal-box h2 {
+            color: #00e5ff;
+            font-size: 24px;
+            margin: 10px 0;
+            text-shadow: 0 0 8px #00e5ff;
+        }
+
+        .modal-box p {
+            font-size: 13px;
+            color: #d1f5ff;
+        }
+
+        /* Falling Items Effect */
+        .falling-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .falling-item {
+            position: absolute;
+            top: -20px;
+            font-size: 20px;
+            animation: fall 2.5s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-<main class="app" id="homePage">
-  <header class="header">
-    <h1 class="title">FF REWARD HUB</h1>
-    <div class="socials" aria-label="Social links">
-      <span class="social-link" aria-label="Instagram">
-        <svg class="social-icon" viewBox="0 0 48 48" aria-hidden="true">
-          <defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffd600"/><stop offset=".35" stop-color="#ff7a00"/><stop offset=".65" stop-color="#e1306c"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs>
-          <rect x="3" y="3" width="42" height="42" rx="12" fill="url(#ig)"/>
-          <rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="#fff" stroke-width="3.2"/>
-          <circle cx="24" cy="24" r="5.5" fill="none" stroke="#fff" stroke-width="3.2"/>
-          <circle cx="34" cy="14" r="2.1" fill="#fff"/>
-        </svg>
-      </span>
-      <span>@goldi_gamerr</span>
-      <span class="social-link" aria-label="YouTube">
-        <svg class="youtube-icon" viewBox="0 0 64 46" aria-hidden="true">
-          <rect x="2" y="3" width="60" height="40" rx="11" fill="#ff0033"/>
-          <path d="M26 13.5 44 23 26 32.5Z" fill="#fff"/>
-        </svg>
-      </span>
-    </div>
-  </header>
 
-  <section class="hub">
-    <div class="grid" id="rewardGrid"></div>
-    <div class="uid-wrap">
-      <input id="uid" class="uid" inputmode="numeric" maxlength="20" placeholder="Enter Game UID" aria-label="Game UID">
-    </div>
-    <button id="claim" class="claim" type="button">CLAIM REWARD</button>
-    <p class="hint">✨ Tap any reward card to select ✨</p>
-  </section>
-</main>
+<div class="mobile-container">
+    
+    <div id="homePage" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <div class="title">FF REWARD HUB</div>
+        <div class="social-tag">
+            <div class="instagram-icon">📸</div>
+            <span>@Goldi_yarr</span>
+        </div>
 
-<button class="gear" id="adminOpen" type="button" aria-label="Open Admin Panel">
-  <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true">
-    <path d="M12 8.1a3.9 3.9 0 1 0 0 7.8 3.9 3.9 0 0 0 0-7.8Zm0 2a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8Z" fill="currentColor"/>
-    <path d="m19.1 13.2 1.4 1.1-1.8 3.1-1.7-.7a7.4 7.4 0 0 1-1.4.8l-.3 1.8h-3.6l-.3-1.8a7.4 7.4 0 0 1-1.4-.8l-1.7.7-1.8-3.1 1.4-1.1a7.6 7.6 0 0 1 0-2.4L6.5 9.7l1.8-3.1 1.7.7a7.4 7.4 0 0 1 1.4-.8l.3-1.8h3.6l.3 1.8a7.4 7.4 0 0 1 1.4.8l1.7-.7 1.8 3.1-1.4 1.1a7.6 7.6 0 0 1 0 2.4ZM14.2 6.7h-4.4l-.3 1.7-.7.3-1.6-.6-.9 1.5 1.3 1-.2.8-1.3 1 1.3 1-.1.8-1.3 1 .9 1.5 1.6-.6.7.3.3 1.7h4.4l.3-1.7.7-.3 1.6.6.9-1.5-1.3-1 .2-.8 1.3-1-1.3-1 .2-.8 1.3-1-.9-1.5-1.6.6-.7-.3-.3-1.7Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-  </svg>
-</button>
-<div class="toast" id="toast" role="status"></div>
+        <div class="reward-grid" id="rewardGrid">
+            </div>
 
-<!-- Admin panel -->
-<div class="modal" id="adminModal" aria-hidden="true">
-  <section class="admin">
-    <div class="admin-head">
-      <h2>ADMIN PANEL</h2>
-      <button class="back" id="adminBack" type="button">Back</button>
+        <div class="input-group">
+            <input type="text" class="uid-input" id="gameUid" placeholder="Enter Game UID (e.g., 12345678)">
+        </div>
+
+        <button class="claim-btn" onclick="handleClaim(event)">CLAIM REWARD</button>
+        <div class="instruction">✨ Tap any reward card to select ✨</div>
+
+        <div class="admin-gear" onclick="toggleAdmin(true)">⚙️</div>
     </div>
-    <div class="admin-grid" id="adminGrid"></div>
-    <div class="admin-actions">
-      <button class="save" id="saveChanges" type="button">Save Changes</button>
-      <button class="reset" id="resetImages" type="button">Reset Images</button>
+
+    <div id="adminPage" class="admin-page">
+        <div class="title" style="font-size: 20px;">ADMIN PANEL</div>
+        <div style="font-size: 12px; color: #8fa3b0; margin-bottom: 15px;">इमेज URL बदलें और सेव करें</div>
+
+        <div class="admin-grid" id="adminGrid">
+            </div>
+
+        <button class="admin-btn" onclick="saveAdminChanges()">Save Changes</button>
+        <button class="back-btn" onclick="toggleAdmin(false)">Back to Home</button>
     </div>
-  </section>
+
 </div>
 
-<!-- Self-contained page: reward images are embedded, so GitHub Pages does not need separate image files. -->
-<div class="success-modal" id="successModal" aria-hidden="true">
-  <div class="success-rain" id="successRain"></div>
-  <section class="success-box">
-    <div class="success-emoji">🎉 🎁</div>
-    <div class="success-title">SUCCESS!</div>
-    <div class="success-sub">Your reward has been claimed</div>
-    <button class="success-back" id="successBack" type="button">Back to Rewards</button>
-  </section>
+<div class="modal-overlay" id="successModal">
+    <div class="falling-container" id="fallingContainer"></div>
+    <div class="modal-box">
+        <div style="font-size: 32px;">🎃🎁</div>
+        <h2>SUCCESS!</h2>
+        <p>Your reward has been claimed</p>
+        <button class="claim-btn" style="margin-top: 15px; width: 60%; padding: 8px; font-size: 12px;" onclick="closeModal()">OK</button>
+    </div>
 </div>
 
 <script>
-const defaultImages = [
-"data:image/jpeg;base64,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
+    // Default Images Placeholder Set
+    const defaultImages = [
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Bundle+1",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Mask",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Car+Skin",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Emote+1",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Emote+2",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Emote+3",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Gun+Skin",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Dress",
+        "https://via.placeholder.com/100/0d1f2d/00e5ff?text=Hair"
+    ];
+
+    let currentImages = JSON.parse(localStorage.getItem('ff_reward_images')) || defaultImages;
+
+    // Render Main Grid
+    function renderGrid() {
+        const grid = document.getElementById('rewardGrid');
+        grid.innerHTML = '';
+        currentImages.forEach((imgSrc, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => card.classList.toggle('selected');
+            
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            
+            card.appendChild(img);
+            grid.appendChild(card);
+        });
+    }
+
+    // Render Admin Grid
+    function renderAdminGrid() {
+        const adminGrid = document.getElementById('adminGrid');
+        adminGrid.innerHTML = '';
+        currentImages.forEach((imgSrc, index) => {
+            const item = document.createElement('div');
+            item.className = 'admin-card-item';
+            
+            item.innerHTML = `
+                <img src="${imgSrc}" id="admin-preview-${index}">
+                <input type="text" value="${imgSrc}" id="admin-input-${index}" placeholder="Image URL">
+            `;
+            adminGrid.appendChild(item);
+        });
+    }
+
+    // Toggle Admin Panel View
+    function toggleAdmin(show) {
+        document.getElementById('homePage').style.display = show ? 'none' : 'flex';
+        document.getElementById('adminPage').style.display = show ? 'flex' : 'none';
+        if (show) renderAdminGrid();
+    }
+
+    // Save Admin Changes to LocalStorage
+    function saveAdminChanges() {
+        for (let i = 0; i < 9; i++) {
+            const val = document.getElementById(`admin-input-${i}`).value;
+            if (val) currentImages[i] = val;
+        }
+        localStorage.setItem('ff_reward_images', JSON.stringify(currentImages));
+        renderGrid();
+        toggleAdmin(false);
+    }
+
+    // Claim Action (Without page reload)
+    function handleClaim(e) {
+        if(e) e.preventDefault();
+        
+        const uid = document.getElementById('gameUid').value.trim();
+        const selected = document.querySelectorAll('.card.selected');
+
+        if (selected.length === 0) {
+            alert('कृपया कम से कम एक रिवॉर्ड चुनें!');
+            return;
+        }
+
+        if (uid.length < 8 || isNaN(uid)) {
+            alert('कृपया एक सही UID दर्ज करें (कम से कम 8 अंक)!');
+            return;
+        }
+
+        // Show Success Popup
+        showSuccessModal();
+    }
+
+    // Modal & Falling Effect Logic
+    function showSuccessModal() {
+        const modal = document.getElementById('successModal');
+        const container = document.getElementById('fallingContainer');
+        container.innerHTML = '';
+        modal.style.display = 'flex';
+
+        const items = ['💎', '🎁', '❤️', '⚡'];
+        for (let i = 0; i < 20; i++) {
+            const el = document.createElement('div');
+            el.className = 'falling-item';
+            el.innerText = items[Math.floor(Math.random() * items.length)];
+            el.style.left = Math.random() * 100 + '%';
+            el.style.animationDelay = Math.random() * 2 + 's';
+            el.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+            container.appendChild(el);
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+
+    // Initial Load
+    renderGrid();
+</script>
+
+</body>
+</html>
